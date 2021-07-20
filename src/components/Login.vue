@@ -27,7 +27,7 @@
           <div class="cursor-pointer flex items-center">
             <div>
               <img
-                src="https://i.ibb.co/rvQTqBr/upeu-removebg-preview.png"
+                src="https://i.ibb.co/PC8SbXc/logo-upeu-white.png"
                 alt="upeu-removebg-preview"
                 border="0"
                 width="500px"
@@ -56,6 +56,7 @@
               font-display font-semibold
               lg:text-left
               xl:text-5xl xl:text-bold
+    
             "
           >
             Iniciar Sesión
@@ -66,7 +67,7 @@
                 <div class="text-sm font-bold text-gray-50 tracking-wide">
                   Usuario
                 </div>
-                <input
+                <input id="login" name="login"
                   class="
                     w-full
                     text-lg
@@ -87,7 +88,7 @@
                     Contraseña
                   </div>
                   <div>
-                    <a
+                    <a id="password" name="login"
                       class="
                         text-xs
                         font-display font-semibold
@@ -134,7 +135,7 @@
                     shadow-lg
                   "
                 >
-                  Log In
+                  Iniciar Sesión
                 </button>
               </div>
             </form>
@@ -158,6 +159,38 @@
   </body>
 </template>
 <script>
+import axios from 'axios';
+export default {
+  name: 'Login',
+  components: {
+  },
+  data: function(){
+    return {
+      usuario: "jhon",
+      password: "123",
+      error: false,
+      error_msg: "",
+    }
+  },
+  methods:{
+    login(){
+        let json = {
+          "usuario" : this.usuario,
+          "password": this.password
+        };
+        axios.post('http://solodata.es/auth', json)
+        .then( data =>{
+           if(data.data.status == "ok"){
+             localStorage.token = data.data.result.token;
+             this.$router.push('dashboard');
+           }else{
+             this.error = true;
+             this.error_msg = data.data.result.error_msg;
+           }
+        })
+    }
+  }
+}
 </script>
 <style scoped>
 .st0 {
